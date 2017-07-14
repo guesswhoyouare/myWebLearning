@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>三栏布局的七种方法方法</title>
+    <style>
+        html,body{
+            margin:0;
+        }
+        /*统一每个块200px的高度 左栏和右栏的宽度为200px*/
+        #method1,#method2,#method3,#method4,#method5,#method6,#method7{
+            margin:10px 0;
+            height:200px;
+        }
+        #left1,#left2,#left3,#left4,#left5,#left6,#left7{
+            background: red;
+            height:100%;
+            width:20%;
+        }
+        #right1,#right2,#right3,#right4,#right5,#right6,#right7{
+            background: blue;
+            height:100%;
+            width:20%;
+        }
+        #main1,#main2,#main3,#main4,#main5,#main6,#main7{
+            background: green;
+            height:100%;
+        }
+        /*绝对定位法*/
+        #method1{
+            position: relative;
+        }
+        #left1{
+            position: absolute;
+            top:0;
+            left:0;
+        }
+        #right1{
+            position: absolute;
+            top:0;
+            right:0;
+        }
+        #main1{
+            margin: 0 21%;
+        }
+        /*双飞翼布局（margin负值法）*/
+        #container2{
+            float: left;
+            width:100%;
+            height:100%;
+        }
+        #main2{
+            margin: 0 21%;
+        }
+        #left2{
+            float:left;
+            margin-left: -100%;
+        }
+        #right2{
+            float: left;
+            margin-left: -20%;
+        }
+
+        /*流体布局*/
+        #main3{
+            margin: 0 21%;
+        }
+        #left3{
+            float: left;
+        }
+        #right3{
+            float: right;
+        }
+        /*BFC布局*/
+        #left4{
+            float: left;
+        }
+
+        #right4{
+            float: right;
+        }
+
+        #main4{
+            overflow: hidden;
+            margin:0 21%;
+        }
+        /*table布局*/
+        #method5{
+            display: table;
+            width:100%;
+        }
+
+        #main5,#left5,#right5{
+            display: table-cell;
+        }
+
+        /*felx弹性布局*/
+        #method6{
+            display: flex;
+            display:-webkit-flex;
+            flex-direction: row; /*决定主轴的方向*/
+            flex-wrap:nowrap; /*决定项目一条轴线排不下时如何换行*/
+            justify-content: space-around; /*决定了项目在主轴上的对齐方式*/
+            align-items:center; /*决定了项目在交叉轴上如何对齐*/
+        }
+
+        #main6{
+            width:58%;
+        }
+
+        /*圣杯布局*/
+        /*这里由于margin:0 21%;的布局，导致left和right元素的width：20%;是margin后的元素的20%，所以变窄了。*/
+        #method7{
+            margin:0 21%;
+        }
+
+        #main7{
+            float: left;
+            width:100%;
+        }
+        #left7{
+            float: left;
+            margin-left:-100%;
+            position: relative;
+            left:-21%;
+        }
+        #right7{
+            float: left;
+            margin-left: -20%;
+            position: relative;
+            left:21%;
+        }
+    </style>
+
+
+</head>
+<body>
+    <!--绝对定位法-->
+    <!--优点：不怎么受内部影响，主要内容可以优先加载，但是如果中间栏含有最小宽度限制，或是含有宽度的内部元素，当浏览器宽度小到一定程度，会发生层重叠的情况-->
+    <div id="method1">
+        <div id="main1"></div>
+        <div id="left1"></div>
+        <div id="right1"></div>
+    </div>
+    <!--双飞翼布局（margin负值法） 使用较多-->
+    <!--关键：第一个必须是主体div-->
+    <!--优点：主体内容优先加载 缺点：代码较复杂，百分比或者使用过多负值 出现bug难以排查-->
+    <div id="method2">
+        <div id="container2">
+            <div id="main2"></div>
+        </div>
+        <div id="left2"></div>
+        <div id="right2"></div>
+    </div>
+    <!--流体布局 仅依靠float布局-->
+    <!--关键：主体div要放在最后-->
+    <!--优点：代码最简单  缺点：主体无法优先加载，clear:both是这种方法的克星-->
+    <div id="method3">
+        <div id="left3"></div>
+        <div id="right3"></div>
+        <div id="main3"></div>
+    </div>
+    <!--BFC布局 利用overflow:hidden来实现BFC使得其不会与浮动元素重叠-->
+    <!--缺点：主体无法优先加载-->
+    <div id="method4">
+        <div id="left4"></div>
+        <div id="right4"></div>
+        <div id="main4"></div>
+    </div>
+    <!--table布局-->
+    <!--这里 #method5{display:table}会使得浏览器默认块级元素样式width:100%失效，而#method5{display:block}不会使得width:100%失效-->
+    <!--优点：等高 table布局稳定 缺点：栏间距无法设定，可以利用padding限制main块内的元素来制造间隔-->
+    <div id="method5" style="background: yellow">
+        <div id="left5"></div>
+        <div id="main5"></div>
+        <div id="right5"></div>
+    </div>
+    <!--felx弹性布局-->
+    <!--属于CSS3，布局使用简单，但是移动端兼容性差,未来趋势-->
+    <div id="method6">
+        <div id="left6"></div>
+        <div id="main6"></div>
+        <div id="right6"></div>
+    </div>
+    <!--圣杯布局    -->
+    <!--类比于双飞翼布局-->
+    <div id="method7">
+        <div id="main7"></div>
+        <div id="left7"></div>
+        <div id="right7"></div>
+    </div>
+</body>
+</html>
